@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased font-sans selection:bg-indigo-500 selection:text-white min-h-screen;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(30, 27, 75, 0.4) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.6) 0px, transparent 50%);
+  }
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.8);
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
+}
+
+/* Modal Overlay Styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 32rem;
+  background-color: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
