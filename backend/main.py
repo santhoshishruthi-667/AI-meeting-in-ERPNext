@@ -8,6 +8,13 @@ import httpx
 import re
 import random
 import string
+import os
+
+raw_frontend = os.environ.get("FRONTEND_URL", "http://localhost:3000").strip().rstrip("/")
+if raw_frontend and not (raw_frontend.startswith("http://") or raw_frontend.startswith("https://")):
+    FRONTEND_URL = f"https://{raw_frontend}"
+else:
+    FRONTEND_URL = raw_frontend
 
 app = FastAPI(
     title="ERPNext AI Meeting Demo Backend",
@@ -46,7 +53,7 @@ MEETINGS_DB: List[Dict[str, Any]] = [
         "meetingUrl": "https://meet.google.com/aie-rpne-xtm",
         "jitsiRoomName": "ERPNext_AI_Meeting_MEET-DEMO-01",
         "jitsiLink": "https://meet.jit.si/ERPNext_AI_Meeting_MEET-DEMO-01",
-        "appLink": "http://localhost:3000/?meetingId=MEET-DEMO-01",
+        "appLink": f"{FRONTEND_URL}/?meetingId=MEET-DEMO-01",
         "status": "Scheduled",
         "attendees": [],
         "agenda": "Discuss ERPNext REST API integration, live transcription webhook, and task creation.",
@@ -242,7 +249,7 @@ def parse_google_meet_transcript(raw_text: str, attendees: List[Dict[str, Any]],
 @app.post("/api/meetings")
 def create_meeting(data: MeetingCreateSchema):
     meeting_id = f"MEET-{uuid.uuid4().hex[:4].upper()}"
-    app_link = f"http://localhost:3000/?meetingId={meeting_id}"
+    app_link = f"{FRONTEND_URL}/?meetingId={meeting_id}"
 
     platform = data.platform or "google_meet"
     jitsi_room = data.jitsiRoomName.strip() if data.jitsiRoomName and data.jitsiRoomName.strip() else f"ERPNext_AI_Meeting_{meeting_id}"
@@ -603,5 +610,6 @@ def list_synced_tasks():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
 

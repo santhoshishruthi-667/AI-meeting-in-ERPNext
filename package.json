@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "backend": "py backend/main.py",
-    "frontend": "cmd.exe /c npm --prefix frontend run dev",
-    "build": "cmd.exe /c npm --prefix frontend run build",
-    "start": "cmd.exe /c npm --prefix frontend run start"
+    "frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start"
   },
   "dependencies": {
     "axios": "^1.20.0",

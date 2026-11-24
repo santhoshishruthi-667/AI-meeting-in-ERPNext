@@ -1,0 +1,40 @@
+services:
+  # -----------------------------------------------------------
+  # 1. FastAPI Python Backend Service
+  # -----------------------------------------------------------
+  - type: web
+    name: erpnext-ai-meeting-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: erpnext-ai-meeting-frontend
+          property: host
+
+  # -----------------------------------------------------------
+  # 2. Next.js Frontend Service
+  # -----------------------------------------------------------
+  - type: web
+    name: erpnext-ai-meeting-frontend
+    runtime: node
+    rootDir: frontend
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: erpnext-ai-meeting-backend
+          property: host

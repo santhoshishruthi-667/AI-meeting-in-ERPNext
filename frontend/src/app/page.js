@@ -21,6 +21,8 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [sharedLinkNotice, setSharedLinkNotice] = useState(null);
 
+  const apiEndpoint = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
   useEffect(() => {
     async function loadInitialData() {
       try {
@@ -60,13 +62,13 @@ export default function Home() {
         }
       } catch (err) {
         console.error('Failed to load from FastAPI backend:', err);
-        setError('Could not connect to FastAPI backend at http://localhost:8000.');
+        setError(`Could not connect to FastAPI backend at ${apiEndpoint}.`);
       } finally {
         setLoading(false);
       }
     }
     loadInitialData();
-  }, []);
+  }, [apiEndpoint]);
 
   const handleSelectMeeting = async (meeting) => {
     setActiveMeeting(meeting);
@@ -118,7 +120,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center space-y-3">
         <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-xs text-slate-400 font-mono">Connecting to FastAPI Backend (http://localhost:8000)...</p>
+        <p className="text-xs text-slate-400 font-mono">Connecting to FastAPI Backend ({apiEndpoint})...</p>
       </div>
     );
   }
@@ -193,7 +195,7 @@ export default function Home() {
       <footer className="border-t border-slate-900 bg-slate-950/80 py-4 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between px-4 gap-2">
           <span>Clean Demo Mode: Next.js + FastAPI ERPNext Meeting Suite</span>
-          <span className="text-slate-600">FastAPI REST Server: http://localhost:8000</span>
+          <span className="text-slate-600">FastAPI REST Server: {apiEndpoint}</span>
         </div>
       </footer>
     </div>
